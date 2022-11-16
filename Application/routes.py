@@ -1,8 +1,9 @@
 
-from flask import render_template, session, url_for, redirect, flash, request, make_response
+from flask import render_template, session
 
 from Application.app import create_app, database
 from datetime import timedelta
+from Application.Model.Appointments import Appointments
 
 
 app = create_app()
@@ -16,7 +17,8 @@ def session_handler():
 
 @app.route('/', methods=("GET", "POST"))
 def index():
-    return render_template("test.html")
+    appointments = Appointments.query.all()
+    return render_template("test.html", appointments=appointments)
 
 
 '''
