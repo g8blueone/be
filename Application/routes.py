@@ -1,3 +1,4 @@
+import datetime
 
 from flask import render_template, session, request
 
@@ -19,14 +20,35 @@ def session_handler():
     app.permanent_session_lifetime = timedelta(minutes=30)
 
 @cross_origin()
-@app.route('/appointment', methods=["GET", "POST"])
+@app.route('/appointments', methods=["GET", "POST", "PUT"])
 def index():
     if request.method == "GET":
         appointments = Appointments.query.all()
         return jsonify([appointment.serialize() for appointment in appointments])
     elif request.method == "POST":
-        object = request.json
-        print(object)
+        new_appointment = request.json
+        appointment = Appointments(new_appointment["patient_name"], new_appointment["doctor_name"], datetime.datetime.strptime(new_appointment['date'], '%b %d %Y %I:%M%p').date(),
+                                   datetime.datetime.strptime(new_appointment['time'], '%b %d %Y %I:%M%p').time(), new_appointment["type"])
+        database.session.add(appointment)
+        database.session.commit()
+    elif request.method == "PUT":
+        new_appointment = request.json
+        appointment = Appointments.query.filter_by(new_appointment["id_appointment"]).first()
+        appointment.patient_name = new_appointment["patient_name"]
+        appointment.doctor_name = new_appointment["doctor_name"]
+        appointment.date = datetime.datetime.strptime(new_appointment['date'], '%b %d %Y %I:%M%p').date()
+        appointment.time = datetime.datetime.strptime(new_appointment['time'], '%b %d %Y %I:%M%p').time()
+        appointment.type = new_appointment["type"]
+
+
+@cross_origin()
+@app.route('/appointments/<id>', methods=["DELETE"])
+def index2(id):
+    Appointments.query.filter_by(id_appointment=id).delete()
+    database.session.commit()
+
+
+
 
 
 '''

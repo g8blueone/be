@@ -12,8 +12,7 @@ class Appointments(database.Model):
     time = database.Column(database.Time, nullable=False)
     type = database.Column(database.String, nullable=False)
 
-    def __init__(self, id_appointment, patient_name, doctor_name, appointment_date, appointment_time, appointment_type):
-        self.id_appointment = id_appointment
+    def __init__(self, patient_name, doctor_name, appointment_date, appointment_time, appointment_type):
         self.patient_name = patient_name
         self.doctor_name = doctor_name
         self.date = appointment_date
