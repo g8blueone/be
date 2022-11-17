@@ -21,10 +21,20 @@ class Appointments(database.Model):
         self.type = appointment_type
 
     def __str__(self):
-        return self.id_appointment + ":" + self.patient_name + ":" + self.doctor_name + ":" + self.date + ":" + self.time + ":" + self.type
+        return str(self.id_appointment) + "," + self.patient_name + "," + self.doctor_name + "," + str(self.date) + "," + str(self.time) + "," + self.type
 
     def __repr__(self):
-        return self.id_appointment + ":" + self.patient_name + ":" + self.doctor_name + ":" + self.date + ":" + self.time + ":" + self.type
+        return str(self.id_appointment) + "," + self.patient_name + "," + self.doctor_name + "," + str(self.date) + "," + str(self.time) + "," + self.type
 
     def get_id(self):
         return self.id_appointment
+
+    def serialize(self):
+        return {
+            "id_appointment" : str(self.id_appointment),
+            "patient_name": self.patient_name,
+            "doctor_name": self.doctor_name,
+            "date": str(self.date),
+            "time": str(self.time),
+            "type": self.type
+        }

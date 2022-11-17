@@ -4,7 +4,7 @@ from flask import render_template, session
 from Application.app import create_app, database
 from datetime import timedelta
 from Application.Model.Appointments import Appointments
-
+from flask import jsonify
 
 app = create_app()
 
@@ -15,10 +15,12 @@ def session_handler():
     app.permanent_session_lifetime = timedelta(minutes=30)
 
 
-@app.route('/', methods=("GET", "POST"))
+@app.route('/', methods=["GET"])
 def index():
     appointments = Appointments.query.all()
-    return render_template("test.html", appointments=appointments)
+    return jsonify([appointment.serialize() for appointment in appointments])
+
+
 
 
 '''
