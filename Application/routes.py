@@ -5,8 +5,12 @@ from Application.app import create_app, database
 from datetime import timedelta
 from Application.Model.Appointments import Appointments
 from flask import jsonify
+from flask_cors import CORS, cross_origin
+
 
 app = create_app()
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.before_first_request
 def session_handler():
@@ -14,13 +18,11 @@ def session_handler():
     session.permanent = True
     app.permanent_session_lifetime = timedelta(minutes=30)
 
-
+@cross_origin()
 @app.route('/', methods=["GET"])
 def index():
     appointments = Appointments.query.all()
     return jsonify([appointment.serialize() for appointment in appointments])
-
-
 
 
 '''
