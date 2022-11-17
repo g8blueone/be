@@ -25,12 +25,15 @@ def index():
     if request.method == "GET":
         appointments = Appointments.query.all()
         return jsonify([appointment.serialize() for appointment in appointments])
+
     elif request.method == "POST":
         new_appointment = request.json
         appointment = Appointments(new_appointment["patient_name"], new_appointment["doctor_name"], datetime.datetime.strptime(new_appointment['date'], '%Y-%m-%d').date(),
                                    datetime.datetime.strptime(new_appointment['time'], '%H:%M').time(), new_appointment["type"])
         database.session.add(appointment)
         database.session.commit()
+        return jsonify(request), 200
+
     elif request.method == "PUT":
         new_appointment = request.json
         appointment = Appointments.query.filter_by(id_appointment=int(new_appointment["id_appointment"])).first()
@@ -40,12 +43,14 @@ def index():
         appointment.time = datetime.datetime.strptime(new_appointment['time'], '%H:%M').time()
         appointment.type = new_appointment["type"]
         database.session.commit()
+        return jsonify(request), 200
 
 @cross_origin()
 @app.route('/appointments/<id>', methods=["DELETE"])
 def index2(id):
     Appointments.query.filter_by(id_appointment=int(id)).delete()
     database.session.commit()
+    return jsonify(request), 200
 
 
 
