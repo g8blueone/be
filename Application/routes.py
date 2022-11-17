@@ -1,5 +1,5 @@
 
-from flask import render_template, session
+from flask import render_template, session, request
 
 from Application.app import create_app, database
 from datetime import timedelta
@@ -19,10 +19,14 @@ def session_handler():
     app.permanent_session_lifetime = timedelta(minutes=30)
 
 @cross_origin()
-@app.route('/', methods=["GET"])
+@app.route('/appointment', methods=["GET", "POST"])
 def index():
-    appointments = Appointments.query.all()
-    return jsonify([appointment.serialize() for appointment in appointments])
+    if request.method == "GET":
+        appointments = Appointments.query.all()
+        return jsonify([appointment.serialize() for appointment in appointments])
+    elif request.method == "POST":
+        object = request.json
+        print(object)
 
 
 '''
