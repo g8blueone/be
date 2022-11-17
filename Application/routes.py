@@ -32,7 +32,7 @@ def index():
                                    datetime.datetime.strptime(new_appointment['time'], '%H:%M').time(), new_appointment["type"])
         database.session.add(appointment)
         database.session.commit()
-        return jsonify(request), 200
+        return jsonify(request.json), 200
 
     elif request.method == "PUT":
         new_appointment = request.json
@@ -43,14 +43,14 @@ def index():
         appointment.time = datetime.datetime.strptime(new_appointment['time'], '%H:%M').time()
         appointment.type = new_appointment["type"]
         database.session.commit()
-        return jsonify(request), 200
+        return jsonify(request.json), 200
 
 @cross_origin()
 @app.route('/appointments/<id>', methods=["DELETE"])
 def index2(id):
     Appointments.query.filter_by(id_appointment=int(id)).delete()
     database.session.commit()
-    return jsonify(request), 200
+    return jsonify(request.json), 200
 
 
 
