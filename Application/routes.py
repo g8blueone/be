@@ -20,7 +20,7 @@ def session_handler():
     app.permanent_session_lifetime = timedelta(minutes=30)
 
 @cross_origin()
-@app.route('/appointments', methods=["GET", "POST", "PUT"])
+@app.route('/appointments', methods=["GET", "POST"])
 def index():
     if request.method == "GET":
         appointments = Appointments.query.all()
@@ -34,9 +34,17 @@ def index():
         database.session.commit()
         return jsonify(request.json), 200
 
+@cross_origin()
+@app.route('/appointments/<id>', methods=["DELETE", "PUT"])
+def index2(id):
+    if request.method == "DELETE":
+        Appointments.query.filter_by(id_appointment=int(id)).delete()
+        database.session.commit()
+        return jsonify(request.json), 200
+
     elif request.method == "PUT":
         new_appointment = request.json
-        appointment = Appointments.query.filter_by(id_appointment=int(new_appointment["id_appointment"])).first()
+        appointment = Appointments.query.filter_by(id_appointment=id).first()
         appointment.patient_name = new_appointment["patient_name"]
         appointment.doctor_name = new_appointment["doctor_name"]
         appointment.date = datetime.datetime.strptime(new_appointment['date'], '%Y-%m-%d').date()
@@ -45,12 +53,6 @@ def index():
         database.session.commit()
         return jsonify(request.json), 200
 
-@cross_origin()
-@app.route('/appointments/<id>', methods=["DELETE"])
-def index2(id):
-    Appointments.query.filter_by(id_appointment=int(id)).delete()
-    database.session.commit()
-    return jsonify(request.json), 200
 
 
 
