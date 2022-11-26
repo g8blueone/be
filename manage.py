@@ -8,9 +8,13 @@ def deploy():
     app.app_context().push()
     database.create_all()
 
-    database.session.add(Appointments.Appointments("Andrei", "Vasile", datetime.date.today(), datetime.datetime.now().time(), "Cardio"))
+    database.session.add(Appointments.Appointments("Andrei", "Vasile","Cluj-Napoca", datetime.date.today(), datetime.datetime.now().time(), "Cardio"))
     database.session.add(
-        Appointments.Appointments("Andrei", "Vasile", datetime.date.today(), datetime.datetime.now().time(), "Cardio"))
+        Appointments.Appointments("Andrei", "Vasile","Floresti",  datetime.date.today(), datetime.datetime.now().time(), "Cardio"))
+
+    database.session.add(
+        Appointments.Appointments("Andrei Marian", "Vasile Voicescu", "Flori esti", datetime.date.today(), datetime.datetime.now().time(),
+                                  "Urgente si altele"))
     database.session.commit()
 
 
