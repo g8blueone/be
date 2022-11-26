@@ -7,7 +7,7 @@ from datetime import timedelta
 from Application.Model.Appointments import Appointments
 from flask import jsonify
 from flask_cors import CORS, cross_origin
-from appointments_query_utils import query_field_parameters
+from appointments_query_utils import query_field_parameters, search_fields
 
 app = create_app()
 cors = CORS(app)
@@ -27,8 +27,9 @@ def index():
         query = query.replace("&","=")
         query = query.split("=")
         filtered_appointments = query_field_parameters(Appointments.query, query)
+        searched_appointments = search_fields(filtered_appointments, query)
 
-        return jsonify([appointment.serialize() for appointment in filtered_appointments])
+        return jsonify([appointment.serialize() for appointment in searched_appointments])
 
     elif request.method == "POST":
         new_appointment = request.json
@@ -63,10 +64,6 @@ def filterByLocation(location):
     appointments = Appointments.query.filter_by(location=location)
     print(appointments)
     return jsonify([appointment.serialize() for appointment in appointments])
-
-
-
-
 
 
 '''

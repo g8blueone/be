@@ -76,5 +76,21 @@ def query_field_parameters(appointments, query):
     return appointments
 
 
-def search_fields(appointments, string):
-    appointments = appointments.filter(appointments)
+def search_fields(appointments, query):
+
+    try:
+        search_position = query.index("search")
+        search = query[search_position + 1]
+        search_list = search.split("%20")
+        search_formatted = ""
+        for i in search_list:
+            search_formatted += i
+            search_formatted += " "
+        appointments = appointments.filter(or_(Appointments.doctor_name.contains(search_formatted[:len(search_formatted)-1]),
+                                                    Appointments.patient_name.contains(search_formatted[:len(search_formatted)-1]),
+                                                     Appointments.location.contains(search_formatted[:len(search_formatted)-1]),
+                                                     Appointments.type.contains(search_formatted[:len(search_formatted)-1])))
+    except:
+        pass
+
+    return appointments
