@@ -58,13 +58,6 @@ def index2(id):
     database.session.commit()
     return jsonify(request), 200
 
-@cross_origin()
-@app.route('/appointmentslocation=<location>/', methods=["GET"])
-def filterByLocation(location):
-    appointments = Appointments.query.filter_by(location=location)
-    print(appointments)
-    return jsonify([appointment.serialize() for appointment in appointments])
-
 
 '''
 @app.route('/<access_level>/profile/student_grades', methods=("GET", "POST"))
