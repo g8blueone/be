@@ -60,25 +60,5 @@ def index2(id):
         return jsonify(request.json), 200
 
 
-@cross_origin()
-@app.route('/appointments/<id>/', methods=["DELETE"])
-def index2(id):
-    Appointments.query.filter_by(id_appointment=int(id)).delete()
-    database.session.commit()
-    return jsonify(request), 200
-
-
-'''
-@app.route('/<access_level>/profile/student_grades', methods=("GET", "POST"))
-@login_required
-def grades():
-    user = Student.query.filter_by(username=current_user.username).first()
-    student_courses = StudentCourse.query.filter_by(student_id=user.student_id).all()
-    courses = Course.query.all()
-
-    return render_template('Student/StudentGrades.html',student_courses = student_courses, courses = courses)
-'''
-
-
 if __name__ == "__main__":
     app.run(debug=True)
