@@ -34,7 +34,7 @@ def index():
         paginated_appointments = paginate(sorted_appointments, query)
         response = Response(Metadata(get_total_of_pages(sorted_appointments)), paginated_appointments)
 
-        return jsonify(response.serlialize())
+        return jsonify(response.serialize())
 
     elif request.method == "POST":
         new_appointment = request.json
