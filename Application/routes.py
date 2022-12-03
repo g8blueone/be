@@ -1,6 +1,6 @@
 import datetime
 
-from flask import render_template, session, request
+from flask import session, request
 
 from Application.app import create_app, database
 from datetime import timedelta
@@ -9,7 +9,7 @@ from Application.Model.Response import Response
 from Application.Model.Metadata import Metadata
 from flask import jsonify
 from flask_cors import CORS, cross_origin
-from appointments_query_utils import query_field_parameters, search_fields, determine_sort_field, paginate, get_total_of_pages
+from Application.Utils.appointments_query_utils import query_field_parameters, search_fields, determine_sort_field, paginate, get_total_of_pages
 
 app = create_app()
 cors = CORS(app)

@@ -3,7 +3,7 @@ import math
 
 from sqlalchemy import or_, desc
 from Application.Model.Appointments import Appointments
-from Utils import constants
+from Application.Utils import constants
 
 
 def query_field_parameters(appointments, query):
@@ -92,7 +92,7 @@ def paginate(appointments, query):
 
 
 def get_total_of_pages(appointments):
-    return math.ceil(appointments.count()/2)
+    return math.ceil(appointments.count()/constants.pagesize)
 
 
 def search_fields(appointments, query):
