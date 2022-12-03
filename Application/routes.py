@@ -5,9 +5,11 @@ from flask import render_template, session, request
 from Application.app import create_app, database
 from datetime import timedelta
 from Application.Model.Appointments import Appointments
+from Application.Model.Response import Response
+from Application.Model.Metadata import Metadata
 from flask import jsonify
 from flask_cors import CORS, cross_origin
-from appointments_query_utils import query_field_parameters, search_fields
+from appointments_query_utils import query_field_parameters, search_fields, determine_sort_field, paginate, get_total_of_pages
 
 app = create_app()
 cors = CORS(app)
@@ -28,8 +30,11 @@ def index():
         query = query.split("=")
         filtered_appointments = query_field_parameters(Appointments.query, query)
         searched_appointments = search_fields(filtered_appointments, query)
+        sorted_appointments = determine_sort_field(searched_appointments, query)
+        paginated_appointments = paginate(sorted_appointments, query)
+        response = Response(Metadata(get_total_of_pages(sorted_appointments)), paginated_appointments)
 
-        return jsonify([appointment.serialize() for appointment in searched_appointments])
+        return jsonify(response.serlialize())
 
     elif request.method == "POST":
         new_appointment = request.json

@@ -1,7 +1,9 @@
 import datetime
+import math
 
-from sqlalchemy import or_
+from sqlalchemy import or_, desc
 from Application.Model.Appointments import Appointments
+from Utils import constants
 
 
 def query_field_parameters(appointments, query):
@@ -76,8 +78,24 @@ def query_field_parameters(appointments, query):
     return appointments
 
 
-def search_fields(appointments, query):
+def paginate(appointments, query):
+    try:
+        page_position = query.index("page")
+        page = int(query[page_position + 1])
+        if page == 1:
+            return appointments[page-1:page+constants.pagesize-1]
+        if page == get_total_of_pages(appointments):
+            return appointments[page+1:page+constants.pagesize]
+        return appointments[page:page+constants.pagesize]
+    except:
+        return appointments
 
+
+def get_total_of_pages(appointments):
+    return math.ceil(appointments.count()/2)
+
+
+def search_fields(appointments, query):
     try:
         search_position = query.index("search")
         search = query[search_position + 1]
@@ -86,10 +104,121 @@ def search_fields(appointments, query):
         for i in search_list:
             search_formatted += i
             search_formatted += " "
-        appointments = appointments.filter(or_(Appointments.doctor_name.contains(search_formatted[:len(search_formatted)-1]),
-                                                    Appointments.patient_name.contains(search_formatted[:len(search_formatted)-1]),
-                                                     Appointments.location.contains(search_formatted[:len(search_formatted)-1]),
-                                                     Appointments.type.contains(search_formatted[:len(search_formatted)-1])))
+        appointments = appointments.filter(
+            or_(Appointments.doctor_name.contains(search_formatted[:len(search_formatted) - 1]),
+                Appointments.patient_name.contains(search_formatted[:len(search_formatted) - 1]),
+                Appointments.location.contains(search_formatted[:len(search_formatted) - 1]),
+                Appointments.type.contains(search_formatted[:len(search_formatted) - 1])))
+    except:
+        pass
+
+    return appointments
+
+def determine_sort_field(appointments, query):
+    try:
+        sort_position = query.index("sortField")
+        sort_field = query[sort_position + 1]
+        match sort_field:
+            case "patientField":
+                return sort_patient_name(appointments, query)
+            case "doctorField":
+                return sort_doctor_name(appointments, query)
+            case "locationField":
+                return sort_location(appointments, query)
+            case "dateField":
+                return sort_location(appointments, query)
+            case "timeField":
+                return sort_time(appointments, query)
+            case "typeField":
+                return sort_type(appointments, query)
+    except:
+        # no sort field added
+        return appointments
+
+
+def sort_patient_name(appointments, query):
+    try:
+        sort_mode = query.index("sortMode")
+        sort = query[sort_mode + 1]
+        if sort == "ASC":
+            appointments = appointments.order_by(Appointments.patient_name)
+        else:
+            appointments = appointments.order_by(desc(Appointments.patient_name))
+    except:
+        pass
+
+    return appointments
+
+
+def sort_doctor_name(appointments, query):
+    try:
+        sort_mode = query.index("sortMode")
+        sort = query[sort_mode + 1]
+        if sort == "ASC":
+            appointments = appointments.order_by(Appointments.doctor_name)
+        else:
+            appointments = appointments.order_by(desc(Appointments.doctor_name))
+
+    except:
+        pass
+
+    return appointments
+
+
+def sort_location(appointments, query):
+    try:
+        sort_mode = query.index("sortMode")
+        sort = query[sort_mode + 1]
+        if sort == "ASC":
+            appointments = appointments.order_by(Appointments.location)
+        else:
+            appointments = appointments.order_by(desc(Appointments.location))
+
+    except:
+        pass
+
+    return appointments
+
+
+def sort_date(appointments, query):
+    try:
+        sort_mode = query.index("sortMode")
+        sort = query[sort_mode + 1]
+        if sort == "ASC":
+            appointments = appointments.order_by(Appointments.date)
+        else:
+            appointments = appointments.order_by(desc(Appointments.date))
+
+    except:
+        pass
+
+    return appointments
+
+
+def sort_time(appointments, query):
+    try:
+        sort_mode = query.index("sortMode")
+        sort = query[sort_mode + 1]
+        if sort == "ASC":
+            appointments = appointments.order_by(Appointments.time)
+        else:
+            appointments = appointments.order_by(desc(Appointments.time))
+
+    except:
+        pass
+
+    return appointments
+
+
+def sort_type(appointments, query):
+    try:
+        sort_mode = query.index("sortMode")
+        sort = query[sort_mode + 1]
+        if sort == "ASC":
+            appointments = appointments.order_by(Appointments.type)
+        else:
+            appointments = appointments.order_by(desc(Appointments.type))
+
     except:
         pass
 
