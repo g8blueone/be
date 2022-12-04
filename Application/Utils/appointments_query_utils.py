@@ -82,11 +82,7 @@ def paginate(appointments, query):
     try:
         page_position = query.index("page")
         page = int(query[page_position + 1])
-        if page == 1:
-            return appointments[page-1:page+constants.pagesize-1]
-        if page == get_total_of_pages(appointments):
-            return appointments[page+1:page+constants.pagesize]
-        return appointments[page:page+constants.pagesize]
+        return appointments[(page-1)*constants.pagesize : (page-1)*constants.pagesize+constants.pagesize]
     except:
         return appointments
 

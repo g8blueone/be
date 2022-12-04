@@ -1,1 +1,1 @@
-pagesize = 2
+pagesize = 3
