@@ -2,9 +2,11 @@ import datetime
 
 from flask import session, request
 
+from Application.Utils.diagnostics_query_utils import get_diagnostic
 from Application.app import create_app, database
 from datetime import timedelta
 from Application.Model.Appointments import Appointments
+from Application.Model.Diagnostic import Diagnostic
 from Application.Model.Response import Response
 from Application.Model.Metadata import Metadata
 from flask import jsonify
@@ -22,7 +24,7 @@ def session_handler():
     app.permanent_session_lifetime = timedelta(minutes=30)
 
 @cross_origin()
-@app.route('/appointments/', methods=["GET", "POST", "PUT"])
+@app.route('/appointments/', methods=["GET", "POST"])
 def index():
     if request.method == "GET":
         query = request.query_string.decode()
@@ -61,6 +63,33 @@ def index2(id):
         appointment.date = datetime.datetime.strptime(new_appointment['date'], '%Y-%m-%d').date()
         appointment.time = datetime.datetime.strptime(new_appointment['time'], '%H:%M').time()
         appointment.type = new_appointment["type"]
+        database.session.commit()
+        return jsonify(request.json), 200
+
+@cross_origin()
+@app.route('/diagnostics/', methods= ["GET", "POST"])
+def amazing_diagnostics():
+    if request.method == "GET":
+        query = request.query_string.decode()
+        query = query.replace("&", "=")
+        query = query.split("=")
+        diagnostic = []
+        diagnostic.append(get_diagnostic(query))
+        if diagnostic != 0:
+            response = Response(Metadata(1), diagnostic)
+            return jsonify(response.serialize())
+        else:
+            return 404
+
+    elif request.method == "POST":
+        new_diagnostic = request.json
+        Diagnostic.query.filter_by(id_appointment=new_diagnostic['id_appointment']).delete()
+        database.session.commit()
+        diagnostic = Diagnostic(new_diagnostic["patient_cnp"], int(new_diagnostic["id_appointment"]),
+                                new_diagnostic["prescription"], datetime.datetime.strptime(new_diagnostic["issue_date"],'%Y-%m-%d').date(),
+                                datetime.datetime.strptime(new_diagnostic["expiration_date"],'%Y-%m-%d').date(),
+                                int(new_diagnostic["compensated"]))
+        database.session.add(diagnostic)
         database.session.commit()
         return jsonify(request.json), 200
 
