@@ -1,11 +1,11 @@
-from Application.app import database
+from Application.database import database
 
 
 class Patients(database.Model):
     __tablename__ = "Patients"
     __table_args__ = {'extend_existing': True}
 
-    cnp_patient = database.Column(database.Numeric(10, 0), primary_key=True)
+    cnp_patient = database.Column(database.String, primary_key=True)
     email = database.Column(database.String, nullable=False)
     password = database.Column(database.String, nullable=False)
     first_name = database.Column(database.String, nullable=False)
@@ -16,7 +16,8 @@ class Patients(database.Model):
     country = database.Column(database.String, nullable=False)
     date_of_birth = database.Column(database.Date, nullable=False)
 
-    def __init__(self, email, password, first_name, last_name, address, city, county, country, date_of_birth):
+    def __init__(self, cnp_patient, email, password, first_name, last_name, address, city, county, country, date_of_birth):
+        self.cnp_patient = cnp_patient
         self.email = email
         self.password = password
         self.first_name = first_name
