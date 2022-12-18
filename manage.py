@@ -1,5 +1,6 @@
 import datetime
 
+from Application.Model import Diagnostic
 
 
 def deploy():
@@ -34,8 +35,7 @@ def deploy():
     database.session.add(
         Diagnostic.Diagnostic("55555", 2, "Nurofen Max 200mg 1 after lunch, Agocalmin 50mg in the morning",
                               datetime.date.today(), datetime.date.today(), 1))
-        Patients.Patients(1111111111111, "email", "pass", "first", "last", "add", "city", "county", "country", datetime.date.today()))
-
+    database.session.add(Patients.Patients(1111111111111, "email", "pass", "first", "last", "add", "city", "county", "country", datetime.date.today()))
 
     database.session.commit()
 

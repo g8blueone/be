@@ -1,4 +1,4 @@
-from Application.app import database
+from Application.database import database
 
 
 class Diagnostic(database.Model):
