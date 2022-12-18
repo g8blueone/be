@@ -3,11 +3,11 @@ from flask_cors import CORS
 from Application.app import app
 from Application.diagnostic_routes import diagnostics_api
 
-from Application.patient_routes import app2
-from Application.routes import app1
+from Application.patient_routes import patients_api
+from Application.appointment_routes import appointments_api
 
-app.register_blueprint(app1)
-app.register_blueprint(app2)
+app.register_blueprint(patients_api)
+app.register_blueprint(appointments_api)
 app.register_blueprint(diagnostics_api)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'

@@ -1,3 +1,4 @@
+from Application.Utils.user_utils import get_user_name
 from Application.database import database
 
 
@@ -36,7 +37,7 @@ class Diagnostic(database.Model):
     def serialize(self):
         return {
             "id_diagnostic": str(self.id_diagnostic),
-            "patient_cnp": self.patient_cnp,
+            "patient_cnp": get_user_name(self.patient_cnp),
             "id_appointment": str(self.id_appointment),
             "prescription": self.prescription,
             "issue_date": str(self.issue_date),

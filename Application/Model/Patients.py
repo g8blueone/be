@@ -29,17 +29,17 @@ class Patients(database.Model):
         self.date_of_birth = date_of_birth
 
     def __str__(self):
-        return str(self.cnp_patient) + "," + self.email + "," + self.password + "," + self.first_name + "," + self.last_name + "," + self.address + "," + self.city + "," + self.county + "," + self.country + "," + str(self.date_of_birth)
+        return self.cnp_patient + "," + self.email + "," + self.password + "," + self.first_name + "," + self.last_name + "," + self.address + "," + self.city + "," + self.county + "," + self.country + "," + str(self.date_of_birth)
 
     def __repr__(self):
-        return str(self.cnp_patient) + "," + self.email + "," + self.password + "," + self.first_name + "," + self.last_name + "," + self.address + "," + self.city + "," + self.county + "," + self.country + "," + str(self.date_of_birth)
+        return self.cnp_patient + "," + self.email + "," + self.password + "," + self.first_name + "," + self.last_name + "," + self.address + "," + self.city + "," + self.county + "," + self.country + "," + str(self.date_of_birth)
 
     def get_cnp(self):
         return self.cnp_patient
 
     def serialize(self):
         return {
-            "cnp_patient": str(self.cnp_patient),
+            "cnp_patient": self.cnp_patient,
             "email": self.email,
             "password": self.password,
             "first_name": self.first_name,

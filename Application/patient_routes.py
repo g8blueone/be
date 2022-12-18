@@ -7,10 +7,10 @@ from Application.database import database
 from flask import jsonify
 from flask_cors import cross_origin
 
-app2 = Blueprint('app2', __name__)
+patients_api = Blueprint('patients_api', __name__)
 
 @cross_origin()
-@app2.route('/patient/<cnp>', methods=["GET", "PUT"])
+@patients_api.route('/patient/<cnp>', methods=["GET", "PUT"])
 def patient_home(cnp):
     if request.method == "GET":
         patient = Patients.query.filter_by(cnp_patient=cnp).first()
