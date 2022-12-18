@@ -1,28 +1,27 @@
 import datetime
 
-from flask import session, request
+from flask import request, Blueprint, session
 
-from Application.app import create_app, database
-from datetime import timedelta
+from Application.app import app
+from Application.database import database
 from Application.Model.Appointments import Appointments
 from Application.Model.Response import Response
 from Application.Model.Metadata import Metadata
 from flask import jsonify
-from flask_cors import CORS, cross_origin
+from flask_cors import cross_origin
 from Application.Utils.appointments_query_utils import query_field_parameters, search_fields, determine_sort_field, paginate, get_total_of_pages
-
-app = create_app()
-cors = CORS(app)
-app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.before_first_request
 def session_handler():
     database.create_all()
     session.permanent = True
-    app.permanent_session_lifetime = timedelta(minutes=30)
+    app.permanent_session_lifetime = datetime.timedelta(minutes=30)
+
+
+app1 = Blueprint('app1', __name__)
 
 @cross_origin()
-@app.route('/appointments/', methods=["GET", "POST", "PUT"])
+@app1.route('/appointments/', methods=["GET", "POST", "PUT"])
 def index():
     if request.method == "GET":
         query = request.query_string.decode()
@@ -45,7 +44,7 @@ def index():
         return jsonify(request.json), 200
 
 @cross_origin()
-@app.route('/appointments/<id>', methods=["DELETE", "PUT"])
+@app1.route('/appointments/<id>', methods=["DELETE", "PUT"])
 def index2(id):
     if request.method == "DELETE":
         Appointments.query.filter_by(id_appointment=int(id)).delete()
@@ -64,6 +63,3 @@ def index2(id):
         database.session.commit()
         return jsonify(request.json), 200
 
-
-if __name__ == "__main__":
-    app.run(debug=True)

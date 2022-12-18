@@ -1,10 +1,10 @@
 import datetime
 
 def deploy():
-    from Application.app import create_app, database
-    from Application.Model import Appointments
+    from Application.app import app
+    from Application.database import database
+    from Application.Model import Appointments, Patients
 
-    app = create_app()
     app.app_context().push()
     database.create_all()
 
@@ -25,6 +25,11 @@ def deploy():
         Appointments.Appointments("Volodymyr Karcenov", "Iulia Maria", "Str. Louis Pasteur nr. 8", datetime.date.today(),
                                   datetime.datetime.now().time(),
                                   "Gastrologie"))
+
+    database.session.add(
+        Patients.Patients(1111111111111, "email", "pass", "first", "last", "add", "city", "county", "country", datetime.date.today()))
+
+
     database.session.commit()
 
 
