@@ -122,7 +122,7 @@ def determine_sort_field(appointments, query):
             case "locationField":
                 return sort_location(appointments, query)
             case "dateField":
-                return sort_location(appointments, query)
+                return sort_date(appointments, query)
             case "timeField":
                 return sort_time(appointments, query)
             case "typeField":

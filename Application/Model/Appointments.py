@@ -34,7 +34,7 @@ class Appointments(database.Model):
 
     def serialize(self):
         return {
-            "id_appointment" : str(self.id_appointment),
+            "id_appointment": str(self.id_appointment),
             "patient_name": self.patient_name,
             "doctor_name": self.doctor_name,
             "location": self.location,

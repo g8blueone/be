@@ -5,6 +5,7 @@ from flask import request, Blueprint, session
 from Application.app import app
 from Application.database import database
 from Application.Model.Appointments import Appointments
+from Application.Model.Diagnostic import Diagnostic
 from Application.Model.Response import Response
 from Application.Model.Metadata import Metadata
 from flask import jsonify
@@ -62,4 +63,3 @@ def index2(id):
         appointment.type = new_appointment["type"]
         database.session.commit()
         return jsonify(request.json), 200
-
