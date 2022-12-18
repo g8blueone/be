@@ -11,31 +11,39 @@ def deploy():
     app.app_context().push()
     database.create_all()
 
-    database.session.add(Appointments.Appointments("Andrei Florian", "Vasile Voicescu","Cluj-Napoca", datetime.date.today(), datetime.datetime.now().time(), "Cardiologie"))
     database.session.add(
-        Appointments.Appointments("Andrei Vaile", "Vasile Voicescu","Floresti",  datetime.date.today(), datetime.datetime.now().time(), "Cardiologie"))
+        Patients.Patients("1", "amazing@fakeemail.com", "1234", "Yuki", "Takamura", "Str. Observatorului nr. 15", "Cluj-Napoca", "Cluj", "Romania",
+                          datetime.date.today()))
 
     database.session.add(
-        Appointments.Appointments("Andrei Marian", "Vasile Voicescu", "Flori esti", datetime.date.today(), datetime.datetime.now().time(),
+        Patients.Patients("2", "lkols@fakeemail.com", "12345", "Ellen", "Rebreanu", "Str. Observatorului nr. 17",
+                          "Cluj-Napoca", "Cluj", "Romania",
+                          datetime.date.today()))
+
+    database.session.add(Appointments.Appointments("1", "Vasile Voicescu","Cluj-Napoca", datetime.date.today(), datetime.datetime.now().time(), "Cardiologie"))
+    database.session.add(
+        Appointments.Appointments("1", "Vasile Voicescu","Floresti",  datetime.date.today(), datetime.datetime.now().time(), "Cardiologie"))
+
+    database.session.add(
+        Appointments.Appointments("2", "Vasile Voicescu", "Flori esti", datetime.date.today(), datetime.datetime.now().time(),
                                   "Neurologie"))
 
     database.session.add(
-        Appointments.Appointments("Zoe Takamura", "Ilie George", "Str. Observatorului nr. 5", datetime.date.today(),
+        Appointments.Appointments("1", "Ilie George", "Str. Observatorului nr. 5", datetime.date.today(),
                                   datetime.datetime.now().time(),
                                   "Fizioterapie"))
 
     database.session.add(
-        Appointments.Appointments("Volodymyr Karcenov", "Iulia Maria", "Str. Louis Pasteur nr. 8", datetime.date.today(),
+        Appointments.Appointments("2", "Iulia Maria", "Str. Louis Pasteur nr. 8", datetime.date.today(),
                                   datetime.datetime.now().time(),
                                   "Gastrologie"))
 
     database.session.add(
-       Diagnostic.Diagnostic("11234", 1, "Nurofen Max 200mg 1 after lunch, Agocalmin 50mg in the morning",datetime.date.today(), datetime.date.today(), 1))
+       Diagnostic.Diagnostic("1", 1, "Nurofen Max 200mg 1 after lunch, Agocalmin 50mg in the morning",datetime.date.today(), datetime.date.today(), 1))
 
     database.session.add(
-        Diagnostic.Diagnostic("55555", 2, "Nurofen Max 200mg 1 after lunch, Agocalmin 50mg in the morning",
+        Diagnostic.Diagnostic("2", 2, "Nurofen Max 200mg 1 after lunch, Agocalmin 50mg in the morning",
                               datetime.date.today(), datetime.date.today(), 1))
-    database.session.add(Patients.Patients(1111111111111, "email", "pass", "first", "last", "add", "city", "county", "country", datetime.date.today()))
 
     database.session.commit()
 
