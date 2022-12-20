@@ -10,7 +10,7 @@ from flask_cors import cross_origin
 doctorapi = Blueprint('doctorapi', __name__)
 
 @cross_origin()
-@app2.route('/doctor/<id_doctor>', methods=["GET", "PUT"])
+@doctorapi.route('/doctor/<id_doctor>', methods=["GET", "PUT"])
 def doctor_home(id_doctor):
     if request.method == "GET":
         doctor = Doctors.query.filter_by(id_doctor=id_doctor).first()
