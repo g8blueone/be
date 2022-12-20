@@ -1,7 +1,7 @@
 import datetime
 
-from flask import request, jsonify, Blueprint
-from flask_cors import cross_origin
+from flask import request, jsonify, Blueprint, make_response
+from flask_cors import cross_origin, CORS
 
 from Application.Model.Appointments import Appointments
 from Application.Model.Metadata import Metadata
@@ -13,7 +13,7 @@ from Application.database import database
 appointments_api = Blueprint('appointments_api', __name__)
 
 @cross_origin()
-@appointments_api.route('/appointments/', methods=["GET", "POST", "PUT"])
+@appointments_api.route('/appointments/', methods=["GET", "POST", "OPTIONS"])
 def index():
     if request.method == "GET":
         query = request.args
@@ -32,10 +32,13 @@ def index():
                                    datetime.datetime.strptime(new_appointment['time'], '%H:%M').time(), new_appointment["type"])
         database.session.add(appointment)
         database.session.commit()
-        return jsonify(request.json), 200
+        return _corsify_actual_response(jsonify(request.json)), 200
+
+    elif request.method == "OPTIONS":
+        return _build_cors_preflight_response()
 
 @cross_origin()
-@appointments_api.route('/appointments/<id>', methods=["DELETE", "PUT"])
+@appointments_api.route('/appointments/<id>', methods=["DELETE", "PUT", "OPTIONS"])
 def index2(id):
     if request.method == "DELETE":
         Appointments.query.filter_by(id_appointment=int(id)).delete()
@@ -52,4 +55,19 @@ def index2(id):
         appointment.time = datetime.datetime.strptime(new_appointment['time'], '%H:%M').time()
         appointment.type = new_appointment["type"]
         database.session.commit()
-        return jsonify(request.json), 200
+        return _corsify_actual_response(jsonify(request.json)), 200
+
+    elif request.method == "OPTIONS":
+        return _build_cors_preflight_response()
+
+
+def _build_cors_preflight_response():
+    response = make_response()
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add('Access-Control-Allow-Headers', "*")
+    response.headers.add('Access-Control-Allow-Methods', "*")
+    return response
+
+def _corsify_actual_response(response):
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response

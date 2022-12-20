@@ -1,6 +1,6 @@
 import datetime
 
-from flask import request, Blueprint
+from flask import request, Blueprint, make_response
 
 from Application.Model.Patients import Patients
 from Application.database import database
@@ -10,7 +10,7 @@ from flask_cors import cross_origin
 patients_api = Blueprint('patients_api', __name__)
 
 @cross_origin()
-@patients_api.route('/patient/<cnp>', methods=["GET", "PUT"])
+@patients_api.route('/patient/<cnp>', methods=["GET", "PUT", "OPTIONS"])
 def patient_home(cnp):
     if request.method == "GET":
         patient = Patients.query.filter_by(cnp_patient=cnp).first()
@@ -32,4 +32,19 @@ def patient_home(cnp):
         patient.date_of_birth = datetime.datetime.strptime(new_patient['date_of_birth'], '%Y-%m-%d').date()
 
         database.session.commit()
-        return jsonify(request.json), 200
+        return _corsify_actual_response(jsonify(request.json)), 200
+
+    elif request.method == "OPTIONS":
+        return _build_cors_preflight_response()
+
+
+def _build_cors_preflight_response():
+    response = make_response()
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add('Access-Control-Allow-Headers', "*")
+    response.headers.add('Access-Control-Allow-Methods', "*")
+    return response
+
+def _corsify_actual_response(response):
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
