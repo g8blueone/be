@@ -2,8 +2,8 @@ from Application.Model import Patients
 
 
 def is_doctor(id):
-    if id[0] == "D":
-        return True
+    # if id[0] == "D":
+    #     return True
     return False
 
 

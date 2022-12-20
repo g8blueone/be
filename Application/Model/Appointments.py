@@ -35,6 +35,7 @@ class Appointments(database.Model):
         return {
             "id_appointment": str(self.id_appointment),
             "patient_name": get_user_name(self.patient_id),
+            "patient_cnp": self.patient_id,
             "doctor_name": self.doctor_name,
             "location": self.location,
             "date": str(self.date),

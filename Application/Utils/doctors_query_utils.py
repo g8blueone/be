@@ -13,5 +13,6 @@ def paginate(doctors, query):
         return doctors
     return doctors
 
+
 def get_total_of_pages(doctors):
     return math.ceil(doctors.count() / constants.pagesize)

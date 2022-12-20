@@ -4,7 +4,7 @@ import math
 from sqlalchemy import or_, desc
 from Application.Model.Appointments import Appointments
 from Application.Utils import constants
-from Application.Utils.user_utils import is_doctor
+from Application.Utils.user_utils import is_doctor, get_user_name
 
 
 def appointments_by_user(appointments, query):
@@ -63,7 +63,7 @@ def search_fields(appointments, query):
     if search:
         appointments = appointments.filter(
             or_(Appointments.doctor_name.contains(search),
-                Appointments.patient_name.contains(search),
+                search in get_user_name(Appointments.patient_id),
                 Appointments.location.contains(search),
                 Appointments.type.contains(search)))
     return appointments

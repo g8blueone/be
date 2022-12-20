@@ -1,6 +1,6 @@
 import datetime
 
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, make_response
 from flask_cors import cross_origin
 
 from Application.Model.Diagnostic import Diagnostic
@@ -12,7 +12,7 @@ from Application.database import database
 diagnostics_api = Blueprint('diagnostics_api', __name__)
 
 @cross_origin()
-@diagnostics_api.route('/diagnostics/', methods= ["GET", "POST"])
+@diagnostics_api.route('/diagnostics/', methods= ["GET", "POST", "OPTIONS"])
 def amazing_diagnostics():
     if request.method == "GET":
         query = request.query_string.decode()
@@ -36,4 +36,18 @@ def amazing_diagnostics():
                                 int(new_diagnostic["compensated"]))
         database.session.add(diagnostic)
         database.session.commit()
-        return jsonify(request.json), 200
+        return _corsify_actual_response(jsonify(request.json)), 200
+
+    elif request.method == "OPTIONS":
+        return _build_cors_preflight_response()
+
+def _build_cors_preflight_response():
+    response = make_response()
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add('Access-Control-Allow-Headers', "*")
+    response.headers.add('Access-Control-Allow-Methods', "*")
+    return response
+
+def _corsify_actual_response(response):
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
