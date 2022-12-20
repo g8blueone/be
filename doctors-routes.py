@@ -20,7 +20,7 @@ def doctor_home(id_doctor):
     elif request.method == "PUT":
         new_doctor = request.json
 
-        doctor = Patients.query.filter_by(cnp_patient=cnp).first()
+        doctor = Doctors.query.filter_by(id_doctor=id_doctor).first()
         doctor.email = new_doctor["email"]
         doctor.password = new_doctor["password"]
         doctor.first_name = new_doctor["first_name"]
