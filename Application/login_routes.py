@@ -10,7 +10,7 @@ from Application.Model.Response import Response
 login_api = Blueprint('login_api', __name__)
 
 @cross_origin()
-@login_api.route('/login', methods= ["POST"])
+@login_api.route('/login', methods= ["POST", "OPTIONS"])
 def amazing_diagnostics():
     if request.method == "POST":
         login_info = request.json
@@ -34,5 +34,20 @@ def amazing_diagnostics():
 
         if bcrypt.checkpw(login_info["password"].encode(), hash_password):
             return make_response("Wrong credentials", 400)
+        response = Response(LoginMeta(bcrypt.hashpw(user.get_id().encode(), salt), type), [])
+        return _corsify_actual_response(jsonify(response.serialize())), 200
 
-        return Response(LoginMeta((bcrypt.hashpw(user.get_id().encode(), salt), 200), type), [])
+    elif request.method == "OPTIONS":
+        return _build_cors_preflight_response()
+
+
+def _build_cors_preflight_response():
+    response = make_response()
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add('Access-Control-Allow-Headers', "*")
+    response.headers.add('Access-Control-Allow-Methods', "*")
+    return response
+
+def _corsify_actual_response(response):
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
