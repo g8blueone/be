@@ -14,7 +14,7 @@ def deploy():
     database.create_all()
 
     database.session.add(
-        Patients.Patients("1", "amazing@fakeemail.com", bcrypt.hashpw("1234".encode(), bcrypt.gensalt()), "Yuki", "Takamura", "Str. Observatorului nr. 15", "Cluj-Napoca", "Cluj", "Romania",
+        Patients.Patients("1", "amazing@fakeemail.com", str(bcrypt.hashpw("1234".encode(), bcrypt.gensalt())), "Yuki", "Takamura", "Str. Observatorului nr. 15", "Cluj-Napoca", "Cluj", "Romania",
                           datetime.date.today()))
 
     database.session.add(
