@@ -10,7 +10,7 @@ from Application.Model.Response import Response
 login_api = Blueprint('login_api', __name__)
 
 @cross_origin()
-@login_api.route('/login', methods= ["GET"])
+@login_api.route('/login', methods= ["POST"])
 def amazing_diagnostics():
     if request.method == "POST":
         login_info = request.json
