@@ -6,6 +6,7 @@ from Application.Model.Doctors import Doctors
 from Application.Model.LoginMeta import LoginMeta
 from Application.Model.Patients import Patients
 from Application.Model.Response import Response
+from Application.Utils.salt_utils import salt
 
 login_api = Blueprint('login_api', __name__)
 
@@ -24,17 +25,18 @@ def amazing_diagnostics():
                 type = "patient"
         else:
             type = "doctor"
-        encoded_password = user.password.encode()
-
-        # generating the salt
-        salt = bcrypt.gensalt()
+        encoded_password = str(user.password).encode()
 
         # Hashing the password
         hash_password = bcrypt.hashpw(encoded_password, salt)
 
         if bcrypt.checkpw(login_info["password"].encode(), hash_password):
             return make_response("Wrong credentials", 400)
-        response = Response(LoginMeta(bcrypt.hashpw(user.get_id().encode(), salt), type), [])
+        response = Response(LoginMeta(str(bcrypt.hashpw(user.get_id().encode(), salt)), type), [])
+        if bcrypt.checkpw(user.get_id().encode(), bcrypt.hashpw(user.get_id().encode(), salt)):
+            print("works")
+        else:
+            print("doesnt work")
         return _corsify_actual_response(jsonify(response.serialize())), 200
 
     elif request.method == "OPTIONS":
