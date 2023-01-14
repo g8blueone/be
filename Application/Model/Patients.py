@@ -34,8 +34,8 @@ class Patients(database.Model):
     def __repr__(self):
         return self.cnp_patient + "," + self.email + "," + self.password + "," + self.first_name + "," + self.last_name + "," + self.address + "," + self.city + "," + self.county + "," + self.country + "," + str(self.date_of_birth)
 
-    def get_cnp(self):
-        return self.cnp_patient
+    def get_id(self):
+        return str(self.cnp_patient)
 
     def serialize(self):
         return {
