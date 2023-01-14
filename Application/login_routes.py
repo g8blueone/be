@@ -2,7 +2,7 @@ import bcrypt
 from flask import Blueprint, request, jsonify, make_response
 from flask_cors import cross_origin
 
-from Application.Model.Doctor import Doctors
+from Application.Model.Doctors import Doctors
 from Application.Model.LoginMeta import LoginMeta
 from Application.Model.Patients import Patients
 from Application.Model.Response import Response
