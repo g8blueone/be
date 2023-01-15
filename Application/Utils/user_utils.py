@@ -30,20 +30,6 @@ def get_user_id(id, type):
             if bcrypt.checkpw(doctor.get_id().encode(), id):
                 return doctor.get_id()
 
-
-def get_user(id, type):
-    if type == "patient":
-        patients = Patients.Patients.query.all()
-        for patient in patients:
-            if bcrypt.checkpw(patient.get_id().encode(), id):
-                return patient
-    else:
-        doctors = Doctors.Doctors.query.all()
-        for doctor in doctors:
-            if bcrypt.checkpw(doctor.get_id().encode(), id):
-                return doctor
-
-
 def get_patient_from_name(name):
     patients = Patients.Patients.query.all()
     for patient in patients:

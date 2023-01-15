@@ -14,17 +14,9 @@ def appointments_by_user(appointments, query):
     user_id = query.get("id")
     if user_id:
         if query.get("user_type") == "patient":
-            patients = Patients.query.all()
-            for patient in patients:
-                if bcrypt.checkpw(patient.get_id().encode(), user_id):
-                    user_id = patient.get_id()
-                    appointments = appointments.filter_by(patient_id=user_id)
+            appointments = appointments.filter_by(patient_id=user_id)
         else:
-            doctors = Doctors.query.all()
-            for doctor in doctors:
-                if bcrypt.checkpw(doctor.get_id().encode(), user_id):
-                    user_id = doctor.get_id()
-                    appointments = appointments.filter_by(doctor_id=user_id)
+            appointments = appointments.filter_by(doctor_id=user_id)
 
 
 

@@ -22,21 +22,21 @@ def deploy():
                           "Cluj-Napoca", "Cluj", "Romania",
                           datetime.date.today()))
 
-    database.session.add(Appointments.Appointments("1", "Vasile Voicescu","Cluj-Napoca", datetime.date.today(), datetime.datetime.now().time(), "Regular Control"))
+    database.session.add(Appointments.Appointments("1", "D1","Cluj-Napoca", datetime.date.today(), datetime.datetime.now().time(), "Regular Control"))
     database.session.add(
-        Appointments.Appointments("1", "Vasile Voicescu","Floresti",  datetime.date.today(), datetime.datetime.now().time(), "Regular Control"))
+        Appointments.Appointments("1", "D1","Floresti",  datetime.date.today(), datetime.datetime.now().time(), "Regular Control"))
 
     database.session.add(
-        Appointments.Appointments("2", "Vasile Voicescu", "Flori esti", datetime.date.today(), datetime.datetime.now().time(),
+        Appointments.Appointments("2", "D2", "Flori esti", datetime.date.today(), datetime.datetime.now().time(),
                                   "Surgery"))
 
     database.session.add(
-        Appointments.Appointments("1", "Ilie George", "Str. Observatorului nr. 5", datetime.date.today(),
+        Appointments.Appointments("1", "D3", "Str. Observatorului nr. 5", datetime.date.today(),
                                   datetime.datetime.now().time(),
                                   "Surgery"))
 
     database.session.add(
-        Appointments.Appointments("2", "Iulia Maria", "Str. Louis Pasteur nr. 8", datetime.date.today(),
+        Appointments.Appointments("2", "D2", "Str. Louis Pasteur nr. 8", datetime.date.today(),
                                   datetime.datetime.now().time(),
                                   "Consulation"))
 
