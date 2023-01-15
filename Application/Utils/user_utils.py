@@ -18,18 +18,6 @@ def get_doctor_name(id):
     user = Doctors.Doctors.query.filter_by(id_doctor=id).first()
     return user.first_name + " " + user.last_name
 
-def get_user_id(id, type):
-    if type == "patient":
-        patients = Patients.Patients.query.all()
-        for patient in patients:
-            if bcrypt.checkpw(patient.get_id().encode(), id):
-                return patient.get_id()
-    else:
-        doctors = Doctors.Doctors.query.all()
-        for doctor in doctors:
-            if bcrypt.checkpw(doctor.get_id().encode(), id):
-                return doctor.get_id()
-
 def get_patient_from_name(name):
     patients = Patients.Patients.query.all()
     for patient in patients:

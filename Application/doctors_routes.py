@@ -16,6 +16,10 @@ doctorapi = Blueprint('doctorapi', __name__)
 def doctor():
     if request.method == "GET":
         query = request.args
+        doctor_id = query.get("id")
+        if doctor_id:
+            doc = Doctors.query.filter_by(id_doctor=doctor_id).first()
+            return jsonify(doc.serialize())
         doctors = paginate(Doctors.query, query)
         response = Response(Metadata(get_total_of_pages(Doctors.query)), doctors)
         return jsonify(response.serialize())

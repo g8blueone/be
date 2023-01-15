@@ -25,11 +25,11 @@ def appointments_by_user(appointments, query):
 def query_field_parameters(appointments, query):
     patient_name = query.get("patient")
     if patient_name:
-        appointments = appointments.filter_by(patient_name=patient_name)
+        appointments = appointments.filter_by(patient_id=patient_name)
 
     doctor_name = query.get("doctor")
     if doctor_name:
-        appointments = appointments.filter_by(doctor_name=doctor_name)
+        appointments = appointments.filter_by(doctor_id=doctor_name)
 
     location = query.get("location")
     if location:
