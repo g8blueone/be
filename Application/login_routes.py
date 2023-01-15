@@ -32,11 +32,7 @@ def amazing_diagnostics():
 
         if bcrypt.checkpw(login_info["password"].encode(), hash_password):
             return make_response("Wrong credentials", 400)
-        response = Response(LoginMeta(str(bcrypt.hashpw(user.get_id().encode(), salt)), type), [])
-        if bcrypt.checkpw(user.get_id().encode(), bcrypt.hashpw(user.get_id().encode(), salt)):
-            print("works")
-        else:
-            print("doesnt work")
+        response = Response(LoginMeta(user.get_id(), type), [])
         return _corsify_actual_response(jsonify(response.serialize())), 200
 
     elif request.method == "OPTIONS":
