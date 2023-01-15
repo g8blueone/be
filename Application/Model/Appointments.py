@@ -8,7 +8,7 @@ class Appointments(database.Model):
 
     id_appointment = database.Column(database.Integer, primary_key=True)
     patient_id = database.Column(database.String, database.ForeignKey('Patients.cnp_patient'))
-    doctor_name = database.Column(database.String, nullable=False)
+    doctor_id = database.Column(database.String, database.ForeignKey('Doctors.id_doctor'))
     location = database.Column(database.String, nullable=False)
     date = database.Column(database.Date, nullable=False)
     time = database.Column(database.Time, nullable=False)
@@ -36,7 +36,7 @@ class Appointments(database.Model):
             "id_appointment": str(self.id_appointment),
             "patient_name": get_user_name(self.patient_id),
             "patient_cnp": self.patient_id,
-            "doctor_name": self.doctor_name,
+            "doctor_name": get_user_name(self.doctor_id),
             "location": self.location,
             "date": str(self.date),
             "time": str(self.time),

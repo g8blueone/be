@@ -1,8 +1,11 @@
 import datetime
 import math
 
+import bcrypt
 from sqlalchemy import or_, desc
 from Application.Model.Appointments import Appointments
+from Application.Model.Doctors import Doctors
+from Application.Model.Patients import Patients
 from Application.Utils import constants
 from Application.Utils.user_utils import is_doctor, get_user_name
 
@@ -10,8 +13,20 @@ from Application.Utils.user_utils import is_doctor, get_user_name
 def appointments_by_user(appointments, query):
     user_id = query.get("id")
     if user_id:
-        if not is_doctor(user_id):
-            appointments = appointments.filter_by(patient_id=user_id)
+        if query.get("user_type") == "patient":
+            patients = Patients.query.all()
+            for patient in patients:
+                if bcrypt.checkpw(patient.get_id().encode(), user_id):
+                    user_id = patient.get_id()
+                    appointments = appointments.filter_by(patient_id=user_id)
+        else:
+            doctors = Doctors.query.all()
+            for doctor in doctors:
+                if bcrypt.checkpw(doctor.get_id().encode(), user_id):
+                    user_id = doctor.get_id()
+                    appointments = appointments.filter_by(doctor_id=user_id)
+
+
 
     return appointments
 

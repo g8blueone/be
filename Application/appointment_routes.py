@@ -4,13 +4,16 @@ from flask import request, jsonify, Blueprint, make_response
 from flask_cors import cross_origin, CORS
 
 from Application.Model.Appointments import Appointments
+from Application.Model.Doctors import Doctors
 from Application.Model.Metadata import Metadata
 from Application.Model.Response import Response
 from Application.Utils.appointments_query_utils import appointments_by_user, query_field_parameters, search_fields, \
     determine_sort_field, paginate, get_total_of_pages
+from Application.Utils.user_utils import get_user, get_patient_from_name, get_user_id
 from Application.database import database
 
 appointments_api = Blueprint('appointments_api', __name__)
+
 
 @cross_origin()
 @appointments_api.route('/appointments/', methods=["GET", "POST", "OPTIONS"])
@@ -28,7 +31,17 @@ def index():
 
     elif request.method == "POST":
         new_appointment = request.json
-        appointment = Appointments(new_appointment["patient_name"], new_appointment["doctor_name"], new_appointment["location"], datetime.datetime.strptime(new_appointment['date'], '%Y-%m-%d').date(),
+        appointment = ""
+        if new_appointment["user_type"] == "doctor":
+            patient_id = get_patient_from_name(new_appointment["patient_name"]).cnp_patient
+            doctor_id = get_user_id(new_appointment["token"], "doctor")
+            appointment = Appointments(patient_id, doctor_id, new_appointment["location"], datetime.datetime.strptime(new_appointment['date'], '%Y-%m-%d').date(),
+                                   datetime.datetime.strptime(new_appointment['time'], '%H:%M').time(), new_appointment["type"])
+
+        if new_appointment["user_type"] == "patient":
+            doctor_id = Doctors.query.filter_by(specialization = new_appointment["type"]).first().get_id()
+            patient_id = get_user_id(new_appointment["token"], "patient")
+            appointment = Appointments(patient_id, doctor_id, new_appointment["location"], datetime.datetime.strptime(new_appointment['date'], '%Y-%m-%d').date(),
                                    datetime.datetime.strptime(new_appointment['time'], '%H:%M').time(), new_appointment["type"])
         database.session.add(appointment)
         database.session.commit()
