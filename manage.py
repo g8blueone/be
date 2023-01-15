@@ -48,7 +48,7 @@ def deploy():
                               datetime.date.today(), datetime.date.today(), 1))
 
     database.session.add(
-        Doctors.Doctors("D1", "Johnny", "Test","Mail@gmail.com" ,"Parolsa", "Cardiology", "Sf Parascheva", "Surgeon")
+        Doctors.Doctors("D1", "Johnny", "Test","Mail@gmail.com" ,str(bcrypt.hashpw("Parola".encode(), bcrypt.gensalt())), "Cardiology", "Sf Parascheva", "Surgeon")
     )
 
     database.session.add(
