@@ -41,10 +41,10 @@ def deploy():
                                   "Consulation"))
 
     database.session.add(
-       Diagnostic.Diagnostic("1", 1, "Nurofen Max 200mg 1 after lunch, Agocalmin 50mg in the morning",datetime.date.today(), datetime.date.today(), 1))
+       Diagnostic.Diagnostic(1, "Nurofen Max 200mg 1 after lunch, Agocalmin 50mg in the morning",datetime.date.today(), datetime.date.today(), 1))
 
     database.session.add(
-        Diagnostic.Diagnostic("2", 2, "Nurofen Max 200mg 1 after lunch, Agocalmin 50mg in the morning",
+        Diagnostic.Diagnostic(2, "Nurofen Max 200mg 1 after lunch, Agocalmin 50mg in the morning",
                               datetime.date.today(), datetime.date.today(), 1))
 
     database.session.add(
