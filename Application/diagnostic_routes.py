@@ -30,7 +30,7 @@ def amazing_diagnostics():
         new_diagnostic = request.json
         Diagnostic.query.filter_by(id_appointment=new_diagnostic['id_appointment']).delete()
         database.session.commit()
-        diagnostic = Diagnostic(new_diagnostic["patient_cnp"], int(new_diagnostic["id_appointment"]),
+        diagnostic = Diagnostic(int(new_diagnostic["id_appointment"]),
                                 new_diagnostic["prescription"], datetime.datetime.strptime(new_diagnostic["issue_date"],'%Y-%m-%d').date(),
                                 datetime.datetime.strptime(new_diagnostic["expiration_date"],'%Y-%m-%d').date(),
                                 int(new_diagnostic["compensated"]))
