@@ -98,9 +98,9 @@ def sort_patient_name(appointments, query):
     sort = query.get("sortMode")
     if sort:
         if sort == "ASC":
-            appointments = appointments.order_by(Appointments.patient_id)
+            appointments = appointments.join(Patients).order_by(Patients.cnp_patient)
         else:
-            appointments = appointments.order_by(desc(Appointments.patient_id))
+            appointments = appointments.join(Patients).order_by(desc(Patients.cnp_patient))
     return appointments
 
 
@@ -108,9 +108,9 @@ def sort_doctor_name(appointments, query):
     sort = query.get("sortMode")
     if sort:
         if sort == "ASC":
-            appointments = appointments.order_by(Appointments.doctor_id)
+            appointments = appointments.join(Doctors).order_by(Doctors.id_doctor)
         else:
-            appointments = appointments.order_by(desc(Appointments.doctor_id))
+            appointments = appointments.join(Doctors).order_by(desc(Doctors.id_doctor))
     return appointments
 
 
