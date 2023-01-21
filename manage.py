@@ -116,9 +116,6 @@ def deploy():
     database.session.add(
         Appointments("5", "D12", "University of Iowa Hospitals and Clinics", today + timedelta(days=8), time(12),
                      "Rheumatology"))
-    database.session.add(
-        Appointments("5", "D8", "University of California, Los Angeles Medical Center", date(2023, 9, 24), time(12),
-                     "Ophthalmology"))
 
     database.session.add(
         Appointments("6", "D10", "University of Michigan Health System", date(2023, 1, 22), time(15), "Urology"))
