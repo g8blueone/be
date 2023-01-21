@@ -55,11 +55,17 @@ def deploy():
                           "Ellen", "Helen", "Str. ", "Cluj-Napoca", "Cluj", "Romania",
                           datetime.date(1922, 4, 23)))
 
-    database.session.add(Appointments("1", "D5", "Johns Hopkins Hospital", date(2023, 1, 27), time(10), "Surgery"))
+    database.session.add(Appointments("1", "D5", "Johns Hopkins Hospital", date(2023, 1, 27), time(10), "Consult"))
     database.session.add(Appointments("1", "D8", "Mayo Clinic", date(2023, 1, 20), time(11), "Oncology"))
     database.session.add(Appointments("1", "D10", "Duke University Hospital", date(2023, 1, 24), time(12), "Urology"))
     database.session.add(
         Appointments("1", "D11", "University of Chicago Medicine", date(2023, 1, 29), time(13), "Ophthalmology"))
+    database.session.add(
+        Appointments("1", "D8", "Mayo Clinic", date(2023, 3, 29), time(13), "Oncology"))
+    database.session.add(
+        Appointments("1", "D14", "Mayo Clinic", date(2023, 4, 29), time(13), "Endocrinology"))
+    database.session.add(
+        Appointments("1", "D12", "Mayo Clinic", date(2023, 4, 29), time(13), "Rheumatology"))
 
     database.session.add(Appointments("2", "D6", "Cleveland Clinic", date(2023, 1, 25), time(11), "Orthopedics"))
     database.session.add(
@@ -69,6 +75,9 @@ def deploy():
     database.session.add(
         Appointments("2", "D12", "University of California, Los Angeles Medical Center", date(2023, 1, 25), time(12),
                      "Rheumatology"))
+    database.session.add(
+        Appointments("2", "D8", "University of California, Los Angeles Medical Center", date(2023, 7, 25), time(12),
+                     "Oncology"))
 
     database.session.add(
         Appointments("3", "D7", "Massachusetts General Hospital", date(2023, 1, 23), time(12), "Neurology"))
@@ -107,6 +116,9 @@ def deploy():
     database.session.add(
         Appointments("5", "D12", "University of Iowa Hospitals and Clinics", today + timedelta(days=8), time(12),
                      "Rheumatology"))
+    database.session.add(
+        Appointments("5", "D8", "University of California, Los Angeles Medical Center", date(2023, 9, 24), time(12),
+                     "Ophthalmology"))
 
     database.session.add(
         Appointments("6", "D10", "University of Michigan Health System", date(2023, 1, 22), time(15), "Urology"))
@@ -150,6 +162,9 @@ def deploy():
     database.session.add(
         Appointments("8", "D12", "University of Iowa Hospitals and Clinics", today + timedelta(days=4), time(12),
                      "Rheumatology"))
+    database.session.add(
+        Appointments("8", "D8", "Brigham and Women's Hospital", date(2023, 10, 28), time(15), "Oncology"))
+
 
     database.session.add(
        Diagnostic.Diagnostic(2, "Nurofen Max 200mg 1 after lunch, Agocalmin 50mg in the morning", date(2023, 1, 20), date(2023, 3, 23), 1))
