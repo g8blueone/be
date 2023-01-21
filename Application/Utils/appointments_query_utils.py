@@ -67,10 +67,10 @@ def search_fields(appointments, query):
     search = query.get("search")
     if search:
         appointments = appointments.filter(
-            or_(Appointments.query.join(Doctors).filter_by(Doctors.first_name.contains(search)),
-                Appointments.query.join(Doctors).filter_by(Doctors.last.contains(search)),
-                Appointments.query.join(Patients).filter_by(Patients.first_name.contains(search)),
-                Appointments.query.join(Patients).filter_by(Patients.last.contains(search)),
+            or_(Appointments.query.join(Doctors).filter(Doctors.first_name.contains(search)),
+                Appointments.query.join(Doctors).filter(Doctors.last.contains(search)),
+                Appointments.query.join(Patients).filter(Patients.first_name.contains(search)),
+                Appointments.query.join(Patients).filter(Patients.last_name.contains(search)),
                 Appointments.location.contains(search),
                 Appointments.type.contains(search)))
     return appointments
