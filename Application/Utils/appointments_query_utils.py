@@ -66,11 +66,11 @@ def get_total_of_pages(appointments):
 def search_fields(appointments, query):
     search = query.get("search")
     if search:
-        appointments = appointments.filter(
-            or_(Appointments.query.join(Doctors).filter(Doctors.first_name.contains(search)),
-                Appointments.query.join(Doctors).filter(Doctors.last_name.contains(search)),
-                Appointments.query.join(Patients).filter(Patients.first_name.contains(search)),
-                Appointments.query.join(Patients).filter(Patients.last_name.contains(search)),
+        appointments = appointments.join(Doctors).join(Patients).filter(
+            or_(Doctors.first_name.contains(search),
+                Doctors.last_name.contains(search),
+                Patients.first_name.contains(search),
+                Patients.last_name.contains(search),
                 Appointments.location.contains(search),
                 Appointments.type.contains(search)))
     return appointments
