@@ -7,7 +7,7 @@ from Application.Model.Appointments import Appointments
 from Application.Model.Doctors import Doctors
 from Application.Model.Patients import Patients
 from Application.Utils import constants
-from Application.Utils.user_utils import is_doctor, get_user_name
+from Application.Utils.user_utils import is_doctor, get_user_name, get_doctor_name
 
 
 def appointments_by_user(appointments, query):
@@ -67,7 +67,7 @@ def search_fields(appointments, query):
     search = query.get("search")
     if search:
         appointments = appointments.filter(
-            or_(Appointments.doctor_name.contains(search),
+            or_(search in get_doctor_name(Appointments.doctor_id),
                 search in get_user_name(Appointments.patient_id),
                 Appointments.location.contains(search),
                 Appointments.type.contains(search)))
