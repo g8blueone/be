@@ -2,6 +2,7 @@ import datetime
 
 from flask import request, jsonify, Blueprint, make_response
 from flask_cors import cross_origin, CORS
+from sqlalchemy import and_, not_
 
 from Application.Model.Appointments import Appointments
 from Application.Model.Doctors import Doctors
@@ -38,7 +39,8 @@ def index():
                                    datetime.datetime.strptime(new_appointment['time'], '%H:%M').time(), new_appointment["type"])
 
         if new_appointment["user_type"] == "patient":
-            doctor_id = Doctors.query.filter_by(specialization = new_appointment["type"]).first().get_id()
+            free_doctors = Appointments.query.with_entities(Appointments.doctor_id).filter(and_(Appointments.date != new_appointment['date'], Appointments.time != new_appointment['time'])).all()
+            doctor_id = Doctors.query.filter(and_(Doctors.specialization == new_appointment["type"], Doctors.id_doctor in free_doctors)).first().get_id()
             appointment = Appointments(new_appointment["token"], doctor_id, new_appointment["location"], datetime.datetime.strptime(new_appointment['date'], '%Y-%m-%d').date(),
                                    datetime.datetime.strptime(new_appointment['time'], '%H:%M').time(), new_appointment["type"])
         database.session.add(appointment)
