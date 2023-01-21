@@ -12,7 +12,7 @@ from Application.database import database
 doctorapi = Blueprint('doctorapi', __name__)
 
 @cross_origin()
-@doctorapi.route('/doctor/', methods=["GET"])
+@doctorapi.route('/doctor/', methods=["GET", "PUT", "OPTIONS"])
 def doctor():
     if request.method == "GET":
         query = request.args
