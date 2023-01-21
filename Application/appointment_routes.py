@@ -66,8 +66,6 @@ def index2(id):
     elif request.method == "PUT":
         new_appointment = request.json
         appointment = Appointments.query.filter_by(id_appointment=id).first()
-        appointment.patient_name = new_appointment["patient_name"]
-        appointment.doctor_name = new_appointment["doctor_name"]
         appointment.location = new_appointment["location"]
         appointment.date = datetime.datetime.strptime(new_appointment['date'], '%Y-%m-%d').date()
         appointment.time = datetime.datetime.strptime(new_appointment['time'], '%H:%M').time()
