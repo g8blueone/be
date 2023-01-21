@@ -28,10 +28,9 @@ def doctor():
         doctor = Doctors.query.filter_by(id_doctor=new_doctor["id"]).first()
         doctor.first_name = new_doctor["first_name"]
         doctor.last_name = new_doctor["last_name"]
-        doctor.address = new_doctor["address"]
-        doctor.city = new_doctor["city"]
-        doctor.county = new_doctor["county"]
-        doctor.country = new_doctor["country"]
+        doctor.hospital= new_doctor["hospital"]
+        doctor.position = new_doctor["position"]
+        doctor.specialization = new_doctor["specialization"]
         database.session.commit()
         return _corsify_actual_response(jsonify(request.json)), 200
     elif request.method == "OPTIONS":
