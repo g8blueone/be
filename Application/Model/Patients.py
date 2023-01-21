@@ -1,3 +1,5 @@
+from sqlalchemy.ext.hybrid import hybrid_property
+
 from Application.database import database
 
 
@@ -33,6 +35,10 @@ class Patients(database.Model):
 
     def __repr__(self):
         return self.cnp_patient + "," + self.email + "," + self.password + "," + self.first_name + "," + self.last_name + "," + self.address + "," + self.city + "," + self.county + "," + self.country + "," + str(self.date_of_birth)
+
+    @hybrid_property
+    def full_name(self):
+        return self.first_name + " " + self.last_name
 
     def get_id(self):
         return str(self.cnp_patient)

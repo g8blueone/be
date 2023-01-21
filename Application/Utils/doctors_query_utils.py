@@ -43,8 +43,7 @@ def search_fields(position, query):
     search = query.get("search")
     if search:
         position = position.filter(
-            or_(Doctors.first_name.contains(search),
-                Doctors.last_name.contains(search),
+            or_(Doctors.full_name.contains(search),
                 Doctors.specialization.contains(search),
                 Doctors.hospital.contains(search),
                 Doctors.position.contains(search)))
