@@ -7,7 +7,7 @@ from Application.Model.Appointments import Appointments
 from Application.Model.Doctors import Doctors
 from Application.Model.Patients import Patients
 from Application.Utils import constants
-from Application.Utils.user_utils import is_doctor, get_user_name
+from Application.Utils.user_utils import is_doctor, get_user_name, get_doctor_name
 
 
 def appointments_by_user(appointments, query):
@@ -66,9 +66,9 @@ def get_total_of_pages(appointments):
 def search_fields(appointments, query):
     search = query.get("search")
     if search:
-        appointments = appointments.filter(
-            or_(Appointments.doctor_name.contains(search),
-                search in get_user_name(Appointments.patient_id),
+        appointments = appointments.join(Doctors).join(Patients).filter(
+            or_(Doctors.full_name.contains(search),
+                Patients.full_name.contains(search),
                 Appointments.location.contains(search),
                 Appointments.type.contains(search)))
     return appointments
@@ -96,9 +96,9 @@ def sort_patient_name(appointments, query):
     sort = query.get("sortMode")
     if sort:
         if sort == "ASC":
-            appointments = appointments.order_by(Appointments.patient_id)
+            appointments = appointments.join(Patients).order_by(Patients.first_name, Patients.last_name)
         else:
-            appointments = appointments.order_by(desc(Appointments.patient_id))
+            appointments = appointments.join(Patients).order_by(desc(Patients.first_name), desc(Patients.last_name))
     return appointments
 
 
@@ -106,9 +106,9 @@ def sort_doctor_name(appointments, query):
     sort = query.get("sortMode")
     if sort:
         if sort == "ASC":
-            appointments = appointments.order_by(Appointments.doctor_id)
+            appointments = appointments.join(Doctors).order_by(Doctors.first_name, Doctors.last_name)
         else:
-            appointments = appointments.order_by(desc(Appointments.doctor_id))
+            appointments = appointments.join(Doctors).order_by(desc(Doctors.first_name), desc(Doctors.last_name))
     return appointments
 
 
