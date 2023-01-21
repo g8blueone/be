@@ -68,7 +68,7 @@ def search_fields(appointments, query):
     if search:
         appointments = appointments.filter(
             or_(Appointments.query.join(Doctors).filter(Doctors.first_name.contains(search)),
-                Appointments.query.join(Doctors).filter(Doctors.last.contains(search)),
+                Appointments.query.join(Doctors).filter(Doctors.last_name.contains(search)),
                 Appointments.query.join(Patients).filter(Patients.first_name.contains(search)),
                 Appointments.query.join(Patients).filter(Patients.last_name.contains(search)),
                 Appointments.location.contains(search),
