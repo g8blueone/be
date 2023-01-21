@@ -18,8 +18,6 @@ def appointments_by_user(appointments, query):
         else:
             appointments = appointments.filter_by(doctor_id=user_id)
 
-
-
     return appointments
 
 def query_field_parameters(appointments, query):
