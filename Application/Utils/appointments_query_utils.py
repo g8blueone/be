@@ -18,8 +18,6 @@ def appointments_by_user(appointments, query):
         else:
             appointments = appointments.filter_by(doctor_id=user_id)
 
-
-
     return appointments
 
 def query_field_parameters(appointments, query):
@@ -98,9 +96,9 @@ def sort_patient_name(appointments, query):
     sort = query.get("sortMode")
     if sort:
         if sort == "ASC":
-            appointments = appointments.join(Patients).order_by(Patients.cnp_patient)
+            appointments = appointments.join(Patients).order_by(Patients.first_name, Patients.last_name)
         else:
-            appointments = appointments.join(Patients).order_by(desc(Patients.cnp_patient))
+            appointments = appointments.join(Patients).order_by(desc(Patients.first_name), desc(Patients.last_name))
     return appointments
 
 
@@ -108,9 +106,9 @@ def sort_doctor_name(appointments, query):
     sort = query.get("sortMode")
     if sort:
         if sort == "ASC":
-            appointments = appointments.join(Doctors).order_by(Doctors.id_doctor)
+            appointments = appointments.join(Doctors).order_by(Doctors.first_name, Doctors.last_name)
         else:
-            appointments = appointments.join(Doctors).order_by(desc(Doctors.id_doctor))
+            appointments = appointments.join(Doctors).order_by(desc(Doctors.first_name), desc(Doctors.last_name))
     return appointments
 
 
