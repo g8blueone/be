@@ -39,11 +39,15 @@ def index():
                                    datetime.datetime.strptime(new_appointment['time'], '%H:%M').time(), new_appointment["type"])
 
         if new_appointment["user_type"] == "patient":
-            busy_doctors = Appointments.query.with_entities(Appointments.doctor_id).filter(and_(Appointments.date == datetime.datetime.strptime(new_appointment['date'], '%Y-%m-%d').date(), Appointments.time == datetime.datetime.strptime(new_appointment['time'], '%H:%M').time())).distinct().all()
-            busy_doctors_list = [doc for (doc,) in busy_doctors]
-            doctor_id = Doctors.query.filter(Doctors.specialization == new_appointment["type"], Doctors.id_doctor.not_in(busy_doctors_list)).first().get_id()
-            appointment = Appointments(new_appointment["token"], doctor_id, new_appointment["location"], datetime.datetime.strptime(new_appointment['date'], '%Y-%m-%d').date(),
-                                   datetime.datetime.strptime(new_appointment['time'], '%H:%M').time(), new_appointment["type"])
+            try:
+                busy_doctors = Appointments.query.with_entities(Appointments.doctor_id).filter(and_(Appointments.date == datetime.datetime.strptime(new_appointment['date'], '%Y-%m-%d').date(), Appointments.time == datetime.datetime.strptime(new_appointment['time'], '%H:%M').time())).distinct().all()
+                busy_doctors_list = [doc for (doc,) in busy_doctors]
+                doctor_id = Doctors.query.filter(Doctors.specialization == new_appointment["type"], Doctors.id_doctor.not_in(busy_doctors_list)).first().get_id()
+                appointment = Appointments(new_appointment["token"], doctor_id, new_appointment["location"], datetime.datetime.strptime(new_appointment['date'], '%Y-%m-%d').date(),
+                                       datetime.datetime.strptime(new_appointment['time'], '%H:%M').time(), new_appointment["type"])
+            except:
+                return make_response("No doctor available", 400)
+
         database.session.add(appointment)
         database.session.commit()
         return _corsify_actual_response(jsonify(request.json)), 200
