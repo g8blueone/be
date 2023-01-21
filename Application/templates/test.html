@@ -8,7 +8,15 @@
           background-color:#fc8d54;
         }
     </style>
-    {% block head %}{% endblock %}
+      {% for appointment in appointments %}
+        <tr>
+            <td>{{appointment.patient_name}}</td>
+            <td>{{appointment.doctor_name}}</td>
+            <td>{{appointment.date}}</td>
+            <td>{{appointment.time}}</td>
+            <td>{{appointment.type}}</td>
+        </tr>
+        {% endfor %}
 </head>
 <body>
   {% block body %}{% endblock %}
